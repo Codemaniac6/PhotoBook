@@ -33,12 +33,16 @@ class GalleryLoginView(LoginView):
     def get_success_url(self):
         return reverse_lazy('gallery')
 
+
 def gallery(request):
-    return render(request, 'gallery.html')
+    categories = Category.objects.all()
+    photos = Photo.objects.all()
+    return render(request, 'gallery.html', {'categories': categories, 'photos': photos})
 
 
 def photoDetail(request, pk):
-    return render(request, 'photo_detail.html')
+    photos = Photo.objects.all()
+    return render(request, 'photo_detail.html', {'photos': photos})
 
 
 def addPhoto(request):

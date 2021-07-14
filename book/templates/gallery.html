@@ -5,59 +5,42 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="list-group">
-                    <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
-                    CATEGORIES
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action">ALL</a>
-                    <a href="#" class="list-group-item list-group-item-action">A third link item</a>
-                    <a href="#" class="list-group-item list-group-item-action">A fourth link item</a>
-                    <a href="#" class="list-group-item list-group-item-action" tabindex="-1" aria-disabled="true">A disabled link item</a>
-                    <a class="btn btn-dark btn-block btn-sm m-1" href="{% url 'add' %}">ADD PHOTO +</a>
+                    <div class="card">
+                        <div class="card-header">
+                            Categories
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <a href="{% url 'gallery' %}">All</a>
+                            </li>
+                            {% for category in categories %}
+                            <li class=" list-group-item">
+                                <a href="">
+                                    {{ category.name|title }}
+                                </a>
+                            </li>
+                            {% endfor %}
+                            <a class="btn btn-dark btn-block btn-sm m-1" href="{% url 'add' %}">ADD PHOTO +</a>
+                        </ul>
+                    </div>
                 </div>
-
             </div>
             <div class="col-md-9">
                 <div class="row">
-                    <div class="col-md-4">
-                        <div class="card my-2">
-                            <img src="https://images.unsplash.com/photo-1529778873920-4da4926a72c2?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Y3V0ZSUyMGNhdHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80" class="image-thumbnail" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <small>Category: Pets</small>
+                    {% for photo in photos %}
+                        <div class="col-md-4">
+                            <div class="card my-2">
+                                <img src="{{ photo.image.url }}" class="image-thumbnail" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ photo.title }}</h5>
+                                    <small>Category: {{ photo.category.name }}</small>
+                                </div>
+                                <a href="{% url 'photo_detail' 5 %}" class="btn btn-outline-dark btn-md m-1">View</a>
                             </div>
-                            <a href="{% url 'photo_detail' 5 %}" class="btn btn-primary btn-sm m-1">Go somewhere</a>
                         </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card my-2">
-                            <img src="https://images.unsplash.com/photo-1529778873920-4da4926a72c2?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Y3V0ZSUyMGNhdHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80" class="image-thumbnail" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <small>Category: Pets</small>
-                            </div>
-                            <a href="#" class="btn btn-primary btn-sm m-1">Go somewhere</a>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card my-2">
-                            <img src="https://images.unsplash.com/photo-1529778873920-4da4926a72c2?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Y3V0ZSUyMGNhdHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80" class="image-thumbnail" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <small>Category: Pets</small>
-                            </div>
-                            <a href="#" class="btn btn-primary btn-sm m-1">Go somewhere</a>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card my-2">
-                            <img src="https://images.unsplash.com/photo-1529778873920-4da4926a72c2?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Y3V0ZSUyMGNhdHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80" class="image-thumbnail" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <small>Category: Pets</small>
-                            </div>
-                            <a href="#" class="btn btn-primary btn-sm m-1">Go somewhere</a>
-                        </div>
-                    </div>
+                    {% empty %}
+                        <h1>N0 PHOTOS</h1>
+                    {% endfor %}
                 </div>
             </div>
         </div>
