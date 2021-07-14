@@ -10,5 +10,5 @@ def photoDetail(request, pk):
 
 
 def addPhoto(request):
-    return render(request, 'add_photo.html')
+    return render(request, 'add.html')
 

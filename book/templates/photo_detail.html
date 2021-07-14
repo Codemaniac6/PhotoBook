@@ -1,1 +1,16 @@
 {% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col">
+                <a href="{% url 'gallery' %}" class="btn btn-dark">Go back</a>
+
+                <div style="height:90vh;">
+                    <img style="max-width:100%; max-height:100%;" src="https://images.unsplash.com/photo-1529778873920-4da4926a72c2?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Y3V0ZSUyMGNhdHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80">
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
