@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView, FormView
+from django.views.generic import CreateView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.urls import reverse_lazy
@@ -42,9 +43,39 @@ def gallery(request):
 
 def photoDetail(request, pk):
     photos = Photo.objects.all()
-    return render(request, 'photo_detail.html', {'photos': photos})
+    photo = Photo.objects.get(id=pk)
+    return render(request, 'photo_detail.html', {'photos': photos, 'photo': photo})
 
 
-def addPhoto(request):
-    return render(request, 'add.html')
+class AddPhotoView(CreateView):
+    model = Photo
+    template_name = 'add.html'
+    fields = ['title', 'description', 'category', 'image']
+    success_url = reverse_lazy('gallery')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        if self.request.method == 'POST':
+            data = self.request.POST
+            image = self.request.FILES.get('image')
+
+            if data['category'] != 'none':
+                category = Category.objects.get(id=data['category'])
+            elif data['new_category'] != '':
+                category, created = Category.objects.get_or_create(name=data['category_new'])
+            else:
+                category = None
+
+            photo = Photo.objects.create(
+                category=category,
+                description=data['description'],
+                title=data['title'],
+                image=image
+            )
+        return super(AddPhotoView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
 

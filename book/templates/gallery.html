@@ -1,41 +1,29 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3">
-                <div class="list-group">
-                    <div class="card">
-                        <div class="card-header">
-                            Categories
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">
-                                <a href="{% url 'gallery' %}">All</a>
-                            </li>
-                            {% for category in categories %}
-                            <li class=" list-group-item">
-                                <a href="">
-                                    {{ category.name|title }}
-                                </a>
-                            </li>
-                            {% endfor %}
-                            <a class="btn btn-dark btn-block btn-sm m-1" href="{% url 'add' %}">ADD PHOTO +</a>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-9">
+    <div class="w3-sidebar w3-bar-block w3-collapse w3-card w3-animate-left" style="width:200px;" id="mySidebar">
+        <button class="w3-bar-item w3-button w3-large w3-hide-large" onclick="w3_close()">Close &times;</button>
+        <h3 class="w3-bar-item">Categories</h3>
+        <a href="{% url 'gallery' %}" class="w3-bar-item w3-button">All</a>
+        {% for category in categories %}
+        <a href="{% url 'gallery' %}?category={{category.name}}" class="w3-bar-item w3-button">{{ category.name|title }}</a>
+        {% endfor %}
+        <a class=" w3-bar-item btn btn-dark btn-block btn-sm m-1" href="{% url 'add' %}">ADD PHOTO +</a>
+    </div>
+    <div class="w3-main" style="margin-left:200px">
+        <button class="w3-button w3-teal w3-xlarge w3-hide-large" onclick="w3_open()">&#9776;</button>
+        <div class="w3-container">
+            <div class="col">
                 <div class="row">
                     {% for photo in photos %}
                         <div class="col-md-4">
                             <div class="card my-2">
-                                <img src="{{ photo.image.url }}" class="image-thumbnail" alt="...">
+                                <img src="{{ photo.image.url }}" class="image-thumbnail Card image cap" alt="...">
                                 <div class="card-body">
                                     <h5 class="card-title">{{ photo.title }}</h5>
                                     <small>Category: {{ photo.category.name }}</small>
                                 </div>
-                                <a href="{% url 'photo_detail' 5 %}" class="btn btn-outline-dark btn-md m-1">View</a>
+                                <a href="{% url 'photo_detail' photo.id %}" class="btn btn-outline-dark btn-md m-1">View</a>
                             </div>
                         </div>
                     {% empty %}
@@ -45,4 +33,13 @@
             </div>
         </div>
     </div>
+    <script>
+        function w3_open() {
+          document.getElementById("mySidebar").style.display = "block";
+        }
+
+        function w3_close() {
+          document.getElementById("mySidebar").style.display = "none";
+        }
+    </script>
 {% endblock content %}
