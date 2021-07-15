@@ -8,7 +8,7 @@
         {% for category in categories %}
         <a href="{% url 'gallery' %}?category={{category.name}}" class="w3-bar-item w3-button">{{ category.name|title }}</a>
         {% endfor %}
-        <a class=" w3-bar-item btn btn-dark btn-block btn-sm m-1" href="{% url 'add' %}">ADD PHOTO +</a>
+        <a class=" w3-bar-item btn btn-dark btn-block btn-sm m-1" href="{% url 'add' %}">ADD PHOTO</a>
     </div>
     <div class="w3-main" style="margin-left:200px">
         <button class="w3-button w3-teal w3-xlarge w3-hide-large" onclick="w3_open()">&#9776;</button>
@@ -27,7 +27,7 @@
                             </div>
                         </div>
                     {% empty %}
-                        <h1>N0 PHOTOS</h1>
+                        <h1>NO PHOTOS...</h1>
                     {% endfor %}
                 </div>
             </div>

@@ -36,13 +36,22 @@ class GalleryLoginView(LoginView):
 
 
 def gallery(request):
+    category = request.GET.get('category')
+    if category == None:
+        photos = Photo.objects.all()
+    else:
+        photos = Photo.objects.filter(category__name=category)
     categories = Category.objects.all()
-    photos = Photo.objects.all()
     return render(request, 'gallery.html', {'categories': categories, 'photos': photos})
 
 
 def photoDetail(request, pk):
-    photos = Photo.objects.all()
+    picture = Photo.objects.get(id=pk)
+    category = picture.category
+    if category == None:
+        photos = Photo.objects.all()
+    else:
+        photos = Photo.objects.filter(category__name=category)
     photo = Photo.objects.get(id=pk)
     return render(request, 'photo_detail.html', {'photos': photos, 'photo': photo})
 
