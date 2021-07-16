@@ -23,12 +23,23 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <a href="{% url 'gallery' %}?category={{photo.category.name}}" style="text-decoration:none;">
-                                            <h4><bold>{{ photo.category.name }}</bold></h4>
-                                        </a>
+                                        <div class="row">
+                                            <div class="col">
+                                                <h3>CATEGORY:
+                                                    <a href="{% url 'gallery' %}?category={{photo.category.name}}" style="text-decoration:none;">
+                                                        <span class="badge bg-danger"><bold>{{ photo.category.name|upper }}</bold></span>
+                                                    </a>
+                                                </h3>
+                                            </div>
+                                        </div>
                                         <p class="lead font-weight-bold">Description</p>
                                         <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
                                         <p>{{ photo.description }}</p>
+                                        <a href="{% url 'photo_delete' photo.id %}" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
+<!--                                            <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">-->
+                                                DELETE
+<!--                                            </button>-->
+                                        </a>
                                     </div>
                               </div>
                         </div>
@@ -45,7 +56,7 @@
                             {% for p in photos %}
                             <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
                                 <div class="card my-2">
-                                    <img src="{{ p.image.url }}" class="image-thumbnail Card image cap" alt="...">
+                                    <img src="{{ p.image.url }}" class="image-thumbnail img-fluid" alt="...">
                                     <div class="card-body">
                                         <h5 class="card-title">{{ p.title }}</h5>
                                         <small>Category: {{ p.category.name }}</small>
@@ -57,6 +68,26 @@
                         </div>
                     </div>
                 </section>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete {{ photo.title }}?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to Delete this photo?
+                    <form method="POST" action="{% url 'photo_delete' photo.id %}">
+                        {% csrf_token %}
+                        <input type="submit" value="Delete" class="btn btn-dark"/>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>

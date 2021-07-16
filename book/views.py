@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView, FormView
-from django.views.generic import CreateView
+from django.views.generic import CreateView, DeleteView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.urls import reverse_lazy
@@ -76,6 +76,7 @@ class AddPhotoView(CreateView):
                 category = None
 
             photo = Photo.objects.create(
+                user=self.request.user,
                 category=category,
                 description=data['description'],
                 title=data['title'],
@@ -88,3 +89,16 @@ class AddPhotoView(CreateView):
         context['categories'] = Category.objects.all()
         return context
 
+
+class PhotoDeleteView(DeleteView):
+    model = Photo
+    context_object_name = 'photo'
+    template_name = 'photo_detail.html'
+    success_url = reverse_lazy('gallery')
+
+
+class CategoryDeleteView(DeleteView):
+    model = Category
+    context_object_name = 'category'
+    template_name = 'photo_detail.html'
+    success_url = reverse_lazy('gallery')
