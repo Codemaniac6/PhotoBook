@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <a class="btn btn-dark btn-md" href="{% url 'gallery' %}">Go back</a>
+        <hr>
+        <div class="row justify-content-center">
+            <h2>ADD PHOTO</h2>
+<!--            <div class="card">-->
+                <div class="col-md-9">
+                    <form action="" method="POST" enctype="multipart/form-data">
+                         {% csrf_token %}
+                         <div class="form-group mb-3">
+                            <label for="title" class="form-label">Title</label>
+                            <input required name="title" type="text" class="form-control" id="title"/>
+                         </div>
+
+                         <div class="form-group mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea name="description" class="form-control" id="description" rows="3"></textarea>
+                         </div>
+                         <div class="form-group mb-3">
+                            <label for="formFile" class="form-label">Image</label>
+                            <input required name="image" class="form-control" type="file" id="formFile">
+                         </div>
+                         <div class="form-group mb-3">
+                             <label>Category</label>
+                             <select name="category" class="form-control">
+                                 <option value="none">Select a category</option>
+                                 {% for category in categories %}
+                                 <option value="{{ category.id }}">{{ category.name|title }}</option>
+                                 {% endfor %}
+                             </select>
+                         </div>
+
+                         <div class="form-group mb-3">
+                            <label for="new_category" class="form-label">Create a new category</label>
+                            <input name="new_category" type="text" class="form-control" id="new_category"/>
+                         </div>
+                         <button type="submit" class="btn btn-dark">Add photo</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+
+<!--    <button onclick="document.getElementById('id01').style.display='block'" class="w3-button btn btn-dark w3-large">Add photo</button>-->
+
+<!--    <div id="id01" class="w3-modal">-->
+<!--        <div class="w3-modal-content w3-card-4" style="max-width:600px">-->
+<!--            <div class="w3-center"><br>-->
+<!--                <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-xlarge w3-hover-red w3-display-topright" title="Close Modal">&times;</span>-->
+<!--                        <h5 class="modal-title" >ADD PHOTO</h5>-->
+<!--            </div>-->
+
+
+<!--            <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">-->
+<!--                <button onclick="document.getElementById('id01').style.display='none'" type="button" class="w3-button w3-red">Cancel</button>-->
+<!--            </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
