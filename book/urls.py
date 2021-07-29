@@ -4,6 +4,7 @@ from .views import *
 
 
 urlpatterns = [
+    path('', GalleryView.as_view(), name='gallery_view'),
     path('', gallery, name='gallery'),
     path('photo/<str:pk>', photoDetail, name='photo_detail'),
     path('add/', AddPhotoView.as_view(), name='add'),

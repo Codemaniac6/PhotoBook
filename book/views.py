@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView, FormView
-from django.views.generic import CreateView, DeleteView
+from django.views.generic import CreateView, DeleteView, ListView
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login
 from django.urls import reverse_lazy
 from .models import Category, Photo
@@ -45,7 +46,22 @@ def gallery(request):
     return render(request, 'gallery.html', {'categories': categories, 'photos': photos})
 
 
+class GalleryView(LoginRequiredMixin, ListView):
+    model = Photo
+    context_object_name = 'photos'
+    template_name = 'gallery.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['photos'] = context['photos'].filter(user=self.request.user)
+        context['categories'] = Category.objects.all()
+
+        return context
+
+
 def photoDetail(request, pk):
+    if request.user.is_anonymous:
+        redirect(reverse_lazy('login'))
     picture = Photo.objects.get(id=pk)
     category = picture.category
     if category == None:
@@ -56,11 +72,12 @@ def photoDetail(request, pk):
     return render(request, 'photo_detail.html', {'photos': photos, 'photo': photo})
 
 
-class AddPhotoView(CreateView):
+class AddPhotoView(LoginRequiredMixin, CreateView):
     model = Photo
     template_name = 'add.html'
     fields = ['title', 'description', 'category', 'image']
     success_url = reverse_lazy('gallery')
+    login_url = reverse_lazy('login')
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -90,7 +107,7 @@ class AddPhotoView(CreateView):
         return context
 
 
-class PhotoDeleteView(DeleteView):
+class PhotoDeleteView(LoginRequiredMixin, DeleteView):
     model = Photo
     context_object_name = 'photo'
     template_name = 'photo_detail.html'
